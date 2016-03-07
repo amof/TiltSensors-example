@@ -9,20 +9,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <xc.h>
+
+// #pragma config statements should precede project file includes.
+// Use project enums instead of #define for ON and OFF.
+
 // CONFIG1L
-#pragma config WDTEN = ON       // Watchdog Timer (Enabled)
+#pragma config WDTEN = OFF      // Watchdog Timer (Disabled - Controlled by SWDTEN bit)
 #pragma config PLLDIV = 1       // PLL Prescaler Selection bits (No prescale (4 MHz oscillator input drives PLL directly))
 #pragma config STVREN = ON      // Stack Overflow/Underflow Reset  (Enabled)
-#pragma config XINST = ON       // Extended Instruction Set (Enabled)
+#pragma config XINST = OFF       // Extended Instruction Set (Enabled)
 
 // CONFIG1H
 #pragma config CPUDIV = OSC1    // CPU System Clock Postscaler (No CPU system clock divide)
 #pragma config CP0 = OFF        // Code Protect (Program memory is not code-protected)
 
 // CONFIG2L
-#pragma config OSC = ECPLL      // Oscillator (EC+PLL (CLKO-RA6), USB-EC+PLL)
+#pragma config OSC = HS         // Oscillator (HS, USB-HS)
 #pragma config T1DIG = ON       // T1OSCEN Enforcement (Secondary Oscillator clock source may be selected)
-#pragma config LPT1OSC = OFF    // Low-Power Timer1 Oscillator (High-power operation)
+#pragma config LPT1OSC = ON     // Low-Power Timer1 Oscillator (Low-power operation)
 #pragma config FCMEN = ON       // Fail-Safe Clock Monitor (Enabled)
 #pragma config IESO = ON        // Internal External Oscillator Switch Over Mode (Enabled)
 
@@ -48,11 +53,17 @@
 // CONFIG4H
 #pragma config WPDIS = OFF      // Write Protect Disable bit (WPFP<5:0>/WPEND region ignored)
 
-int main(int argc, char** argv) {
-
-    while(1){
-        ;
+void main (void)
+{
+    //DEEP SLEEP configuration
+    OSCCONbits.IDLEN = 0;
+    DSCONHbits.DSEN = 1;
+    
+    Sleep();
+     while(1){
+    ;
     }
-    return (0);
+
+
 }
 
