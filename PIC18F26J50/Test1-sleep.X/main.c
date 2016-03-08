@@ -56,8 +56,11 @@
 void main (void)
 {
     //DEEP SLEEP configuration
+    //DSCONHbits.DSEN = 1;
+    
+    //SLEEP
     OSCCONbits.IDLEN = 0;
-    DSCONHbits.DSEN = 1;
+    WDTCONbits.REGSLP=1;
     
     Sleep();
      while(1){
